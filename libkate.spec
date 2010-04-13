@@ -1,3 +1,10 @@
+# TODO
+# - static
+# - python package?
+#
+# Conditional build:
+%bcond_without	tests		# build without tests
+
 Summary:	Libraries to handle the Kate bitstream format
 Name:		libkate
 Version:	0.3.7
@@ -15,6 +22,7 @@ BuildRequires:	libogg-devel
 BuildRequires:	liboggz
 BuildRequires:	libpng-devel
 BuildRequires:	python-devel
+BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	valgrind
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -58,7 +66,7 @@ This package contains the docs for %{name}.
 %setup -q
 %patch0 -p1
 
-# We regenerate theses files at built step
+# We regenerate these files at built step
 rm tools/kate_parser.{c,h}
 rm tools/kate_lexer.c
 
@@ -67,6 +75,8 @@ rm tools/kate_lexer.c
 	--docdir=%{_docdir}/%{name}-%{version}
 
 %{__make}
+
+%{?with_tests:%{__make} check}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -77,8 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 # Fix for header timestramps
 touch -r $RPM_BUILD_ROOT%{_includedir}/kate/kate_config.h $RPM_BUILD_ROOT%{_includedir}/kate/kate.h
 
-%check
-make check
+%py_postclean
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -88,18 +97,23 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%exclude %{_docdir}/libkate-%{version}/html
 %doc %{_docdir}/libkate-%{version}
-# XXX files fix
-%attr(755,root,root) %{_libdir}/*.so.*
+%exclude %{_docdir}/libkate-%{version}/html
+%attr(755,root,root) %ghost %{_libdir}/libkate.so.1
+%attr(755,root,root) %{_libdir}/libkate.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/liboggkate.so.1
+%attr(755,root,root) %{_libdir}/liboggkate.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
 %doc examples
 %{_includedir}/kate
-# XXX files fix
-%attr(755,root,root) %{_libdir}/*.so
-%{_pkgconfigdir}/*.pc
+%{_libdir}/libkate.so
+%{_libdir}/libkate.la
+%{_libdir}/liboggkate.so
+%{_libdir}/liboggkate.la
+%{_pkgconfigdir}/kate.pc
+%{_pkgconfigdir}/oggkate.pc
 
 %files utils
 %defattr(644,root,root,755)
@@ -107,8 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/katalyzer
 %attr(755,root,root) %{_bindir}/katedec
 %attr(755,root,root) %{_bindir}/kateenc
-# XXX files fix
-%{py_sitescriptdir}/kdj
+%dir %{py_sitescriptdir}/kdj
+%{py_sitescriptdir}/kdj/*.py[co]
 %{_mandir}/man1/KateDJ.1*
 %{_mandir}/man1/katalyzer.1*
 %{_mandir}/man1/katedec.1*
