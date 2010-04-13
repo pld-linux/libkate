@@ -1,11 +1,11 @@
 # TODO
-# - static
-# - python package?
+# - katedj package (KateDJ script + kdj python modules)?
 #
 # Conditional build:
 %bcond_without	tests		# build without tests
-
+#
 Summary:	Libraries to handle the Kate bitstream format
+Summary(pl.UTF-8):	Biblioteki do obsługi strumienia bitowego Kate
 Name:		libkate
 Version:	0.3.7
 Release:	0.1
@@ -36,31 +36,66 @@ Kate is meant to be used for karaoke alongside audio/video streams
 (typically Vorbis and Theora), movie subtitles, song lyrics, and
 anything that needs text data at arbitrary time intervals.
 
+%description -l pl.UTF-8
+Ten pakiet zawiera libkate - referencyjną implementację kodeka do
+formatu strumienia bitowego Kate. Kate to kodek tekstowy i karaoke
+przeznaczony do opakowania w kontener Ogg. Może zawierać tekst,
+obrazki i animować je.
+
+Kate może być używany do karaoke dla strumieni audio/video (zwykle
+Vorbis i Theora), napisów do filmów, tekstów piosenek oraz
+czegokolwiek innego wymagającego tekstu w określonych chwilach.
+
 %package devel
-Summary:	Development files for %{name}
+Summary:	Header files for Kate libraries
+Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Kate
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libogg-devel
 
 %description devel
-This package contains libraries and header files for developing
-applications that use %{name}.
+This package contains the header files for developing applications
+that use Kate libraries.
+
+%description devel -l pl.UTF-8
+Ten pakiet zawiera pliki nagłówkowe do tworzenia aplikacji
+wykorzystujących biblioteki Kate.
+
+%package static
+Summary:	Static Kate libraries
+Summary(pl.UTF-8):	Statyczne biblioteki Kate
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static Kate libraries.
+
+%description static -l pl.UTF-8
+Statyczne biblioteki Kate.
 
 %package utils
-Summary:	Encoder/Decoder utilities for %{name}
+Summary:	Encoder/Decoder utilities for Kate bitstreams
+Summary(pl.UTF-8):	Kodery i dekodery do strumieni bitowych Kate
 Group:		Applications/Multimedia
 Requires:	%{name} = %{version}-%{release}
 Requires:	liboggz
 
 %description utils
-This package contains the katedec/kateenc binaries for %{name}.
+This package contains the katedec/kateenc binaries for Kate streams.
+
+%description utils -l pl.UTF-8
+Ten pakiet zawiera narzędzie katedec i kateenc do strumieni Kate.
 
 %package docs
-Summary:	Documentation for %{name}
+Summary:	Documentation for Kate libraries
+Summary(pl.UTF-8):	Dokumentacja do bibliotek Kate
 Group:		Documentation
 
 %description docs
-This package contains the docs for %{name}.
+This package contains the documentation for Kate libraries.
+
+%description docs -l pl.UTF-8
+Ten pakiet zawiera dokumentację do bibliotek Kate.
 
 %prep
 %setup -q
@@ -99,21 +134,26 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc %{_docdir}/libkate-%{version}
 %exclude %{_docdir}/libkate-%{version}/html
-%attr(755,root,root) %ghost %{_libdir}/libkate.so.1
 %attr(755,root,root) %{_libdir}/libkate.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/liboggkate.so.1
+%attr(755,root,root) %ghost %{_libdir}/libkate.so.1
 %attr(755,root,root) %{_libdir}/liboggkate.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/liboggkate.so.1
 
 %files devel
 %defattr(644,root,root,755)
 %doc examples
-%{_includedir}/kate
-%{_libdir}/libkate.so
+%attr(755,root,root) %{_libdir}/libkate.so
 %{_libdir}/libkate.la
-%{_libdir}/liboggkate.so
+%attr(755,root,root) %{_libdir}/liboggkate.so
 %{_libdir}/liboggkate.la
+%{_includedir}/kate
 %{_pkgconfigdir}/kate.pc
 %{_pkgconfigdir}/oggkate.pc
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libkate.a
+%{_libdir}/liboggkate.a
 
 %files utils
 %defattr(644,root,root,755)
