@@ -18,7 +18,8 @@ URL:		http://code.google.com/p/libkate/
 BuildRequires:	bison
 BuildRequires:	doxygen
 BuildRequires:	flex
-BuildRequires:	libogg-devel
+BuildRequires:	libogg-devel >= 2:1.0
+# oggz binary
 BuildRequires:	liboggz
 BuildRequires:	libpng-devel
 BuildRequires:	python-devel
@@ -51,7 +52,7 @@ Summary:	Header files for Kate libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Kate
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libogg-devel
+Requires:	libogg-devel >= 2:1.0
 
 %description devel
 This package contains the header files for developing applications
@@ -78,6 +79,7 @@ Summary:	Encoder/Decoder utilities for Kate bitstreams
 Summary(pl.UTF-8):	Kodery i dekodery do strumieni bitowych Kate
 Group:		Applications/Multimedia
 Requires:	%{name} = %{version}-%{release}
+# oggz binary (for KateDJ only)
 Requires:	liboggz
 
 %description utils
