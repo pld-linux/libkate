@@ -1,14 +1,13 @@
-# TODO
-# - png 1.4 fix
 Summary:	Libraries to handle the Kate bitstream format
 Name:		libkate
 Version:	0.3.7
 Release:	0.1
 License:	BSD
 Group:		Libraries
-URL:		http://code.google.com/p/libkate/
 Source0:	http://libkate.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	e5c287b4f40498e5bde48c0a52225292
+Patch0:		%{name}-libpng.patch
+URL:		http://code.google.com/p/libkate/
 BuildRequires:	bison
 BuildRequires:	doxygen
 BuildRequires:	flex
@@ -57,6 +56,7 @@ This package contains the docs for %{name}.
 
 %prep
 %setup -q
+%patch0 -p1
 
 # We regenerate theses files at built step
 rm tools/kate_parser.{c,h}
@@ -64,7 +64,6 @@ rm tools/kate_lexer.c
 
 %build
 %configure \
-	--disable-static \
 	--docdir=%{_docdir}/%{name}-%{version}
 
 %{__make}
@@ -74,8 +73,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	INSTALL="install -p"
-
-find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 # Fix for header timestramps
 touch -r $RPM_BUILD_ROOT%{_includedir}/kate/kate_config.h $RPM_BUILD_ROOT%{_includedir}/kate/kate.h
@@ -111,11 +108,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/katedec
 %attr(755,root,root) %{_bindir}/kateenc
 # XXX files fix
-%{py_sitedir}/kdj
-%{_mandir}/man1/KateDJ.*
-%{_mandir}/man1/katalyzer.*
-%{_mandir}/man1/katedec.*
-%{_mandir}/man1/kateenc.*
+%{py_sitescriptdir}/kdj
+%{_mandir}/man1/KateDJ.1*
+%{_mandir}/man1/katalyzer.1*
+%{_mandir}/man1/katedec.1*
+%{_mandir}/man1/kateenc.1*
 
 %files docs
 %defattr(644,root,root,755)
