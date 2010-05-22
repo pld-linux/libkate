@@ -22,10 +22,15 @@ BuildRequires:	libogg-devel >= 2:1.0
 # oggz binary
 BuildRequires:	liboggz
 BuildRequires:	libpng-devel
+BuildRequires:	pkgconfig
 BuildRequires:	python-devel
+BuildRequires:	python-modules
+BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
-BuildRequires:	valgrind
+BuildRequires:	util-linux
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%undefine	__cxx
 
 %description
 This is libkate, the reference implementation of a codec for the Kate
