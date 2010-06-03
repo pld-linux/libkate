@@ -8,7 +8,7 @@ Summary:	Libraries to handle the Kate bitstream format
 Summary(pl.UTF-8):	Biblioteki do obsługi strumienia bitowego Kate
 Name:		libkate
 Version:	0.3.7
-Release:	0.1
+Release:	1
 License:	BSD
 Group:		Libraries
 Source0:	http://libkate.googlecode.com/files/%{name}-%{version}.tar.gz
