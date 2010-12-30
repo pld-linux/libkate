@@ -7,13 +7,13 @@
 Summary:	Libraries to handle the Kate bitstream format
 Summary(pl.UTF-8):	Biblioteki do obsługi strumienia bitowego Kate
 Name:		libkate
-Version:	0.3.7
-Release:	2
+Version:	0.3.8
+Release:	1
 License:	BSD
 Group:		Libraries
+#Source0Download: http://code.google.com/p/libkate/downloads/list
 Source0:	http://libkate.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	e5c287b4f40498e5bde48c0a52225292
-Patch0:		%{name}-libpng.patch
+# Source0-md5:	7489ddebedf8d9888a05496dedf83c71
 URL:		http://code.google.com/p/libkate/
 BuildRequires:	bison
 BuildRequires:	doxygen
@@ -106,11 +106,10 @@ Ten pakiet zawiera dokumentację do bibliotek Kate.
 
 %prep
 %setup -q
-%patch0 -p1
 
 # We regenerate these files at built step
-rm tools/kate_parser.{c,h}
-rm tools/kate_lexer.c
+%{__rm} tools/kate_parser.{c,h}
+%{__rm} tools/kate_lexer.c
 
 %build
 %configure \
