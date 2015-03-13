@@ -14,6 +14,7 @@ Group:		Libraries
 #Source0Download: http://code.google.com/p/libkate/downloads/list
 Source0:	http://libkate.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	1dfdbdeb2fa5d07063cf5b8261111fca
+Patch0:		0001-Fix-tests-check_sizes.c-on-x32.patch
 URL:		http://code.google.com/p/libkate/
 BuildRequires:	bison
 BuildRequires:	doxygen
@@ -106,6 +107,7 @@ Ten pakiet zawiera dokumentację do bibliotek Kate.
 
 %prep
 %setup -q
+%patch0 -p1
 
 # We regenerate these files at built step
 %{__rm} tools/kate_parser.{c,h}
