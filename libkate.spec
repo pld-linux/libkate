@@ -11,11 +11,10 @@ Version:	0.4.1
 Release:	5
 License:	BSD
 Group:		Libraries
-#Source0Download: http://code.google.com/p/libkate/downloads/list
-Source0:	http://libkate.googlecode.com/files/%{name}-%{version}.tar.gz
+Source0:	http://downloads.xiph.org/releases/kate/%{name}-%{version}.tar.gz
 # Source0-md5:	1dfdbdeb2fa5d07063cf5b8261111fca
 Patch0:		0001-Fix-tests-check_sizes.c-on-x32.patch
-URL:		http://code.google.com/p/libkate/
+URL:		https://wiki.xiph.org/OggKate
 BuildRequires:	bison
 BuildRequires:	doxygen
 BuildRequires:	flex
