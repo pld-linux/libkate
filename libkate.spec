@@ -113,6 +113,8 @@ Ten pakiet zawiera dokumentację do bibliotek Kate.
 %{__rm} tools/kate_parser.{c,h}
 %{__rm} tools/kate_lexer.c
 
+%{__sed} -i -e '1s,/usr/bin/env python$,%{__python},' tools/KateDJ/KateDJ
+
 %build
 cp -f /usr/share/automake/config.sub misc/autotools
 %configure \
