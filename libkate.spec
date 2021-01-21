@@ -15,6 +15,7 @@ Source0:	http://downloads.xiph.org/releases/kate/%{name}-%{version}.tar.gz
 # Source0-md5:	1dfdbdeb2fa5d07063cf5b8261111fca
 Patch0:		0001-Fix-tests-check_sizes.c-on-x32.patch
 URL:		https://wiki.xiph.org/OggKate
+BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	doxygen
 BuildRequires:	flex
@@ -113,6 +114,7 @@ Ten pakiet zawiera dokumentację do bibliotek Kate.
 %{__rm} tools/kate_lexer.c
 
 %build
+cp -f /usr/share/automake/config.sub misc/autotools
 %configure \
 	--docdir=%{_docdir}/%{name}-%{version}
 
