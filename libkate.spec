@@ -2,18 +2,17 @@
 # - katedj package (KateDJ script + kdj python modules)?
 #
 # Conditional build:
-%bcond_without	tests		# build without tests
+%bcond_without	tests	# unit tests
 #
 Summary:	Libraries to handle the Kate bitstream format
 Summary(pl.UTF-8):	Biblioteki do obsługi strumienia bitowego Kate
 Name:		libkate
-Version:	0.4.1
-Release:	5
+Version:	0.4.3
+Release:	1
 License:	BSD
 Group:		Libraries
-Source0:	http://downloads.xiph.org/releases/kate/%{name}-%{version}.tar.gz
-# Source0-md5:	1dfdbdeb2fa5d07063cf5b8261111fca
-Patch0:		0001-Fix-tests-check_sizes.c-on-x32.patch
+Source0:	https://downloads.xiph.org/releases/kate/%{name}-%{version}.tar.gz
+# Source0-md5:	6bdd4315a2ebe49effa4b6e76e383d4f
 URL:		https://wiki.xiph.org/OggKate
 BuildRequires:	automake
 BuildRequires:	bison
@@ -24,8 +23,10 @@ BuildRequires:	libogg-devel >= 2:1.0
 BuildRequires:	liboggz
 BuildRequires:	libpng-devel
 BuildRequires:	pkgconfig
-BuildRequires:	python-devel
-BuildRequires:	python-modules
+BuildRequires:	python3-devel >= 1:3
+BuildRequires:	python3-modules >= 1:3
+# kdj import check
+BuildRequires:	python3-wxPython
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	util-linux
@@ -107,13 +108,12 @@ Ten pakiet zawiera dokumentację do bibliotek Kate.
 
 %prep
 %setup -q
-%patch -P0 -p1
 
 # We regenerate these files at built step
 %{__rm} tools/kate_parser.{c,h}
 %{__rm} tools/kate_lexer.c
 
-%{__sed} -i -e '1s,/usr/bin/env python$,%{__python},' tools/KateDJ/KateDJ
+%{__sed} -i -e '1s,/usr/bin/env python3$,%{__python3},' tools/KateDJ/KateDJ
 
 %build
 cp -f /usr/share/automake/config.sub misc/autotools
@@ -126,9 +126,16 @@ cp -f /usr/share/automake/config.sub misc/autotools
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	INSTALL="install -p"
+
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*kate.la
+
+install -d $RPM_BUILD_ROOT%{_examplesdir}
+cp -pr examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 # Fix for header timestramps
 touch -r $RPM_BUILD_ROOT%{_includedir}/kate/kate_config.h $RPM_BUILD_ROOT%{_includedir}/kate/kate.h
@@ -152,14 +159,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc examples
 %attr(755,root,root) %{_libdir}/libkate.so
-%{_libdir}/libkate.la
 %attr(755,root,root) %{_libdir}/liboggkate.so
-%{_libdir}/liboggkate.la
 %{_includedir}/kate
 %{_pkgconfigdir}/kate.pc
 %{_pkgconfigdir}/oggkate.pc
+%{_examplesdir}/%{name}-%{version}
 
 %files static
 %defattr(644,root,root,755)
@@ -172,8 +177,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/katalyzer
 %attr(755,root,root) %{_bindir}/katedec
 %attr(755,root,root) %{_bindir}/kateenc
-%dir %{py_sitescriptdir}/kdj
-%{py_sitescriptdir}/kdj/*.py[co]
+%{py3_sitescriptdir}/kdj
 %{_mandir}/man1/KateDJ.1*
 %{_mandir}/man1/katalyzer.1*
 %{_mandir}/man1/katedec.1*
