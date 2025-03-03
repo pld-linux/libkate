@@ -107,7 +107,7 @@ Ten pakiet zawiera dokumentację do bibliotek Kate.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 # We regenerate these files at built step
 %{__rm} tools/kate_parser.{c,h}
